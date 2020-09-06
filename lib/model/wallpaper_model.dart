@@ -5,30 +5,30 @@ class WallpaperModel {
   SrcModel src;
 
   WallpaperModel(
-      {this.photographer, this.photographerID, this.photographerURL, this.src});
+      {this.photographerURL, this.photographerID, this.photographer, this.src});
 
   factory WallpaperModel.fromMap(Map<String, dynamic> jsonData) {
     return WallpaperModel(
-      src: jsonData["src"],
-      photographerURL: jsonData["photographer_url"],
-      photographerID: jsonData["photographer_id"],
-      photographer: jsonData["photographer"],
-    );
+        photographerURL: jsonData["photographer_url"],
+        photographerID: jsonData["photographer_id"],
+        photographer: jsonData["photographer"],
+        src: SrcModel.fromMap(jsonData["src"]));
   }
 }
 
 class SrcModel {
-  String original;
-  String small;
   String portrait;
+  String large;
+  String landscape;
+  String medium;
 
-  SrcModel({this.original, this.portrait, this.small});
+  SrcModel({this.portrait, this.landscape, this.large, this.medium});
 
-  factory SrcModel.fromMap(Map<String, dynamic> jsonData) {
+  factory SrcModel.fromMap(Map<String, dynamic> srcJson) {
     return SrcModel(
-      original: jsonData["original"],
-      small: jsonData["small"],
-      portrait: jsonData["portrait"],
-    );
+        portrait: srcJson["portrait"],
+        large: srcJson["large"],
+        landscape: srcJson["landscape"],
+        medium: srcJson["medium"]);
   }
 }

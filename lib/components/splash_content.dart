@@ -17,12 +17,16 @@ class SplashContent extends StatelessWidget {
         Spacer(),
         Hero(
           tag: "appTitle",
-          child: Text(
-            "Splash",
-            style: TextStyle(
-              fontSize: getProportionateScreenWidth(36),
-              color: kPrimaryColor,
-              fontWeight: FontWeight.bold,
+          transitionOnUserGestures: true,
+          child: Material(
+            type: MaterialType.transparency,
+            child: Text(
+              "Splash",
+              style: TextStyle(
+                fontSize: getProportionateScreenWidth(36),
+                color: kPrimaryColor,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
