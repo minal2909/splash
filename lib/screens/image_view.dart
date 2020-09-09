@@ -1,10 +1,15 @@
 import 'dart:typed_data';
-
+import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ImageView extends StatefulWidget {
   static String routeName = "/imageView";
@@ -20,6 +25,15 @@ class ImageView extends StatefulWidget {
 
 class _ImageViewState extends State<ImageView> {
   var filePath;
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,10 +44,20 @@ class _ImageViewState extends State<ImageView> {
             child: Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              child: Image.network(
-                widget.imgURL,
-                fit: BoxFit.cover,
-              ),
+              child: kIsWeb
+                  ? Image.network(widget.imgURL, fit: BoxFit.cover)
+                  : CachedNetworkImage(
+                      imageUrl: widget.imgURL,
+                      placeholder: (context, url) => Container(
+                        color: Colors.black,
+                        //Color(0xfff5f8fd),
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+              // child: Image.network(
+              //   widget.imgURL,
+              //   fit: BoxFit.cover,
+              // ),
             ),
           ),
           Container(
@@ -43,9 +67,13 @@ class _ImageViewState extends State<ImageView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                GestureDetector(
+                InkWell(
                   onTap: () {
-                    _save();
+                    if (kIsWeb) {
+                      _launchURL(widget.imgURL);
+                    } else {
+                      _save();
+                    }
                   },
                   child: Stack(
                     children: [
@@ -123,12 +151,12 @@ class _ImageViewState extends State<ImageView> {
 
   _askPermission() async {
     if (Platform.isIOS) {
-      /*Map<PermissionGroup, PermissionStatus> permissions =
-          */
+      //Map<PermissionGroup, PermissionStatus> permissions =
+
       await PermissionHandler().requestPermissions([PermissionGroup.photos]);
     } else {
-      /* PermissionStatus permission = */ await PermissionHandler()
-          .checkPermissionStatus(PermissionGroup.storage);
+      //PermissionStatus permission =
+      await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
     }
   }
 }
