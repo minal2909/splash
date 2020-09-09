@@ -8,6 +8,7 @@ import 'package:splash/widgets/widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:splash/screens/search.dart';
 import 'categories.dart';
+import 'image_view.dart';
 
 class Home extends StatefulWidget {
   static String routeName = "/home";
@@ -137,8 +138,8 @@ class CategoriesTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Navigator.push(context,MaterialPageRoute(builder:(context){
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
           return Categories(categoryName: title.toLowerCase());
         }));
       },

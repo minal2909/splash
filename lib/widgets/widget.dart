@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:splash/constant.dart';
 import 'package:splash/model/wallpaper_model.dart';
 import 'package:splash/size_config.dart';
+import 'package:splash/screens/image_view.dart';
 
 Widget AppName() {
   return Hero(
@@ -37,10 +38,22 @@ Widget wallpaperList({List<WallpaperModel> wallpaper, context}) {
           return GridTile(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Container(
-                child: Image.network(
-                  wallpaper.src.portrait,
-                  fit: BoxFit.cover,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ImageView(
+                      imgURL: wallpaper.src.portrait,
+                    );
+                  }));
+                },
+                child: Hero(
+                  tag: wallpaper.src.portrait,
+                  child: Container(
+                    child: Image.network(
+                      wallpaper.src.portrait,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
             ),
