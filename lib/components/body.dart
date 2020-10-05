@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:splash/constant.dart';
 import 'package:splash/size_config.dart';
+import 'package:splash/widgets/tabBar.dart';
 import 'splash_content.dart';
 import 'default_button.dart';
 import 'package:splash/screens/home.dart';
@@ -67,7 +68,7 @@ class _BodyState extends State<Body> {
                       defaultButton(
                         text: "Continue",
                         press: () {
-                          Navigator.pushNamed(context, Home.routeName);
+                          Navigator.pushNamed(context, TabBarSplash.routeName);
                         },
                       ),
                       Spacer(),
