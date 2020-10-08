@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
@@ -20,6 +21,7 @@ import 'home.dart';
 import 'package:http/http.dart' as http;
 import 'package:splash/data/data.dart';
 import 'package:wallpaper_manager/wallpaper_manager.dart';
+import 'package:flutter/cupertino.dart';
 
 class ImageView extends StatefulWidget {
   static String routeName = "/imageView";
@@ -58,10 +60,10 @@ class _ImageViewState extends State<ImageView> {
   }
 
   _onTapProcess(context, values) {
-    return AlertDialog(
+    return CupertinoActionSheet(
       title: Text("Set as Wallpaper"),
       actions: [
-        FlatButton(
+        CupertinoActionSheetAction(
           onPressed: () async {
             if (_askPermission() != null) {
               Dio dio = Dio();
@@ -80,7 +82,7 @@ class _ImageViewState extends State<ImageView> {
                   _localpath = localpath;
                 });
                 //print(context);
-                Wallpaperplugin.setAutoWallpaper(localFile: _localpath);
+                WallpaperManager.setWallpaperFromFile(localpath, location);
               } on PlatformException catch (e) {
                 print(e);
               }
@@ -90,13 +92,36 @@ class _ImageViewState extends State<ImageView> {
           },
           child: Text("Home Screen"),
         ),
-        FlatButton(
-          onPressed: () {
-            Navigator.pop(context);
+        CupertinoActionSheetAction(
+          onPressed: () async {
+            if (_askPermission() != null) {
+              Dio dio = Dio();
+              final Directory appdirectory =
+                  await getExternalStorageDirectory();
+              final Directory directory =
+                  await Directory(appdirectory.path + '/wallpapers')
+                      .create(recursive: true);
+              final String dir = directory.path;
+              String localpath = '$dir/myimages.jpeg';
+              int location = WallpaperManager.LOCK_SCREEN;
+
+              try {
+                dio.download(values, localpath);
+                setState(() {
+                  _localpath = localpath;
+                });
+                //print(context);
+                WallpaperManager.setWallpaperFromFile(localpath, location);
+              } on PlatformException catch (e) {
+                print(e);
+              }
+
+              Navigator.pop(context);
+            } else {}
           },
           child: Text("Lock Screen"),
         ),
-        FlatButton(
+        CupertinoActionSheetAction(
           onPressed: () {
             Navigator.pop(context);
           },

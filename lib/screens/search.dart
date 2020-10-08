@@ -7,6 +7,8 @@ import 'package:splash/data/data.dart';
 import 'package:splash/model/wallpaper_model.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
+import '../size_config.dart';
+
 class Search extends StatefulWidget {
   static String routeName = "/search";
   final String searchQuery;
@@ -66,76 +68,108 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        title: AppName(),
-        elevation: 0.0,
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
+          title: Row(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
-                  color: Color(0xfff5f8fd),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 24.0),
-                margin: EdgeInsets.symmetric(horizontal: 24.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: searchTextField =
-                          AutoCompleteTextField<WallpaperModel>(
-                        key: key,
-                        clearOnSubmit: false,
-                        suggestions: wallpaper,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Search Wallpaper",
-                        ),
-                        itemFilter: (item, query) {
-                          return item.photographer
-                              .toLowerCase()
-                              .startsWith(query.toLowerCase());
-                        },
-                        itemSorter: (a, b) {
-                          return a.photographer.compareTo(b.photographer);
-                        },
-                        itemSubmitted: (item) {
-                          setState(() {
-                            searchTextField.textField.controller.text =
-                                item.photographer;
-                          });
-                        },
-                        itemBuilder: (context, item) {
-                          return row(item);
-                        },
-                      ),
-                      // child: TextField(
-                      //   controller: searchEditingController,
-                      //   decoration: InputDecoration(
-                      //     border: InputBorder.none,
-                      //     hintText: "Search Wallpaper",
-                      //   ),
-                      // ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        getSearchWallpapers(searchEditingController.text);
-                      },
-                      child: Container(child: Icon(Icons.search)),
-                    ),
-                  ],
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
                 ),
               ),
-              SizedBox(
-                height: 16.0,
-              ),
-              wallpaperList(wallpaper: wallpaper, context: context),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 100),
+                child: Text(
+                  "Search",
+                  style: TextStyle(
+                      fontSize: getProportionateScreenWidth(25),
+                      color: Color(0xff263238),
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "mulish"),
+                ),
+              )
             ],
+          ),
+          elevation: 0.0,
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30.0),
+                    color: Color(0xfff5f8fd),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 24.0),
+                  margin: EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        // child: searchTextField =
+                        //     AutoCompleteTextField<WallpaperModel>(
+                        //   key: key,
+                        //   clearOnSubmit: false,
+                        //   suggestions: wallpaper,
+                        //   decoration: InputDecoration(
+                        //     border: InputBorder.none,
+                        //     hintText: "Search Wallpaper",
+                        //   ),
+                        //   itemFilter: (item, query) {
+                        //     return item.photographer
+                        //         .toLowerCase()
+                        //         .startsWith(query.toLowerCase());
+                        //   },
+                        //   itemSorter: (a, b) {
+                        //     return a.photographer.compareTo(b.photographer);
+                        //   },
+                        //   itemSubmitted: (item) {
+                        //     setState(() {
+                        //       searchTextField.textField.controller.text =
+                        //           item.photographer;
+                        //     });
+                        //   },
+                        //   itemBuilder: (context, item) {
+                        //     return row(item);
+                        //   },
+                        // ),
+                        child: TextField(
+                          controller: searchEditingController,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Search Wallpaper",
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Search(
+                                        searchQuery:
+                                            searchEditingController.text,
+                                      )));
+                        },
+                        child: Container(child: Icon(Icons.search)),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 16.0,
+                ),
+                wallpaperList(wallpaper: wallpaper, context: context),
+              ],
+            ),
           ),
         ),
       ),

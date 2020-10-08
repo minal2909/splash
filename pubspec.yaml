@@ -44,6 +44,7 @@ dependencies:
   wallpaperplugin: ^0.1.1
   autocomplete_textfield: ^1.7.3
   wallpaper_manager: ^1.0.10
+  flutter_cache_manager: ^1.4.2
 
 dev_dependencies:
   flutter_test:
