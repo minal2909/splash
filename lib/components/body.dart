@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:splash/constant.dart';
 import 'package:splash/size_config.dart';
 import 'package:splash/widgets/Mydemo.dart';
-
 import 'splash_content.dart';
 import 'default_button.dart';
 import 'package:splash/screens/home.dart';
@@ -16,7 +15,10 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   int currentPage = 0;
   List<Map<String, String>> splashData = [
-    {"text": "Hey!Welcome to Splash", "image": "images/splash_first.png"},
+    {
+      "text": "Hey! Welcome to Incredible 4K wallpapers 2020",
+      "image": "images/splash_first.png"
+    },
     {
       "text":
           "You can directly Set the wallpaper from the app in home,lock and Home & Lock Screen",

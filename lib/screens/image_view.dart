@@ -19,6 +19,7 @@ import 'package:path_provider/path_provider.dart';
 import 'home.dart';
 import 'package:http/http.dart' as http;
 import 'package:splash/data/data.dart';
+import 'package:wallpaper_manager/wallpaper_manager.dart';
 
 class ImageView extends StatefulWidget {
   static String routeName = "/imageView";
@@ -62,7 +63,6 @@ class _ImageViewState extends State<ImageView> {
       actions: [
         FlatButton(
           onPressed: () async {
-            print(context);
             if (_askPermission() != null) {
               Dio dio = Dio();
               final Directory appdirectory =
@@ -72,6 +72,7 @@ class _ImageViewState extends State<ImageView> {
                       .create(recursive: true);
               final String dir = directory.path;
               String localpath = '$dir/myimages.jpeg';
+              int location = WallpaperManager.HOME_SCREEN;
 
               try {
                 dio.download(values, localpath);
@@ -87,13 +88,19 @@ class _ImageViewState extends State<ImageView> {
               Navigator.pop(context);
             } else {}
           },
-          child: Text("YES"),
+          child: Text("Home Screen"),
         ),
         FlatButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text("NO"),
+          child: Text("Lock Screen"),
+        ),
+        FlatButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text("Cancel"),
         )
       ],
     );

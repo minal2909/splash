@@ -21,12 +21,12 @@ class SplashContent extends StatelessWidget {
           child: Material(
             type: MaterialType.transparency,
             child: Text(
-              "Splash",
+              "Incredible 4K wallpapers 2020",
               style: TextStyle(
-                fontSize: getProportionateScreenWidth(36),
-                color: kPrimaryColor,
-                fontWeight: FontWeight.bold,
-              ),
+                  fontSize: getProportionateScreenWidth(25),
+                  color: kPrimaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "mulish"),
             ),
           ),
         ),

@@ -12,12 +12,12 @@ Widget AppName() {
       type: MaterialType.transparency,
       child: Center(
         child: Text(
-          "Splash",
+          "Incredible 4K wallpapers 2020",
           style: TextStyle(
-            fontSize: getProportionateScreenWidth(25),
-            color: kPrimaryColor,
-            fontWeight: FontWeight.bold,
-          ),
+              fontSize: getProportionateScreenWidth(25),
+              color: Color(0xff263238),
+              fontWeight: FontWeight.bold,
+              fontFamily: "mulish"),
         ),
       ),
     ),

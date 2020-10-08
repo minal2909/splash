@@ -5,6 +5,7 @@ import 'package:splash/widgets/widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:splash/data/data.dart';
 import 'package:splash/model/wallpaper_model.dart';
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
 class Search extends StatefulWidget {
   static String routeName = "/search";
@@ -18,6 +19,26 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   TextEditingController searchEditingController = new TextEditingController();
   List<WallpaperModel> wallpaper = new List();
+  AutoCompleteTextField searchTextField;
+  GlobalKey<AutoCompleteTextFieldState<WallpaperModel>> key = new GlobalKey();
+
+  Widget row(WallpaperModel wallpaperModel) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          wallpaperModel.photographer,
+          style: TextStyle(fontSize: 16.0),
+        ),
+        SizedBox(
+          width: 10.0,
+        ),
+        Text(
+          wallpaperModel.photographerURL,
+        )
+      ],
+    );
+  }
 
   void getSearchWallpapers(String query) async {
     http.Response response = await http.get(
@@ -66,13 +87,40 @@ class _SearchState extends State<Search> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: TextField(
-                        controller: searchEditingController,
+                      child: searchTextField =
+                          AutoCompleteTextField<WallpaperModel>(
+                        key: key,
+                        clearOnSubmit: false,
+                        suggestions: wallpaper,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "Search Wallpaper",
                         ),
+                        itemFilter: (item, query) {
+                          return item.photographer
+                              .toLowerCase()
+                              .startsWith(query.toLowerCase());
+                        },
+                        itemSorter: (a, b) {
+                          return a.photographer.compareTo(b.photographer);
+                        },
+                        itemSubmitted: (item) {
+                          setState(() {
+                            searchTextField.textField.controller.text =
+                                item.photographer;
+                          });
+                        },
+                        itemBuilder: (context, item) {
+                          return row(item);
+                        },
                       ),
+                      // child: TextField(
+                      //   controller: searchEditingController,
+                      //   decoration: InputDecoration(
+                      //     border: InputBorder.none,
+                      //     hintText: "Search Wallpaper",
+                      //   ),
+                      // ),
                     ),
                     GestureDetector(
                       onTap: () {

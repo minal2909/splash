@@ -13,6 +13,7 @@ import 'package:splash/screens/search.dart';
 import 'package:splash/screens/categories.dart';
 import 'package:splash/screens/image_view.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
 class MyDemo extends StatelessWidget {
   static String routeName = "/myDemo";
@@ -38,6 +39,27 @@ class _TabBarSplashState extends State<TabBarSplash>
   TextEditingController searchEditingController = new TextEditingController();
   ScrollController _scrollController = new ScrollController();
   TabController _controller;
+  List<WallpaperModel> wallpaper = new List();
+  // AutoCompleteTextField searchTextField;
+  // GlobalKey<AutoCompleteTextFieldState<WallpaperModel>> key = new GlobalKey();
+  //
+  // Widget row(WallpaperModel wallpaperModel) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     children: [
+  //       Text(
+  //         wallpaperModel.photographer,
+  //         style: TextStyle(fontSize: 16.0),
+  //       ),
+  //       SizedBox(
+  //         width: 10.0,
+  //       ),
+  //       Text(
+  //         wallpaperModel.photographerURL,
+  //       )
+  //     ],
+  //   );
+  // }
 
   @override
   void initState() {
@@ -53,112 +75,141 @@ class _TabBarSplashState extends State<TabBarSplash>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 48.0,
-        color: Colors.white,
-        child: Column(
-          children: [
-            AppName(),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30.0),
-                color: Color(0xfff5f8fd),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 24.0),
-              margin: EdgeInsets.symmetric(horizontal: 24.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: searchEditingController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Search Wallpaper",
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Search(
-                                    searchQuery: searchEditingController.text,
-                                  )));
-                    },
-                    child: Container(child: Icon(Icons.search)),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 16.0,
-            ),
-            Container(
-              height: 80,
-              child: ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    return CategoriesTile(
-                      title: categories[index].catagoriesName,
-                      imgURL: categories[index].imgURL,
-                    );
-                  }),
-            ),
-            Expanded(
-              flex: 1,
-              child: Scaffold(
-                body: Column(
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 48.0,
+      color: Colors.white,
+      child: SafeArea(
+        child: Scaffold(
+          body: Column(
+            children: [
+              AppName(),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.0),
+                  color: Color(0xfff5f8fd),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 24.0),
+                margin: EdgeInsets.symmetric(horizontal: 24.0),
+                child: Row(
                   children: [
-                    Container(
-                      child: TabBar(
-                        controller: _controller,
-                        labelColor: Colors.black,
-                        tabs: [
-                          Tab(
-                            icon: const Icon(
-                              Icons.trending_up,
-                              color: Colors.black,
-                            ),
-                            text: "Trending",
-                          ),
-                          Tab(
-                            icon: const Icon(
-                              Icons.favorite,
-                              color: Colors.black,
-                            ),
-                            text: "Favourite",
-                          ),
-                        ],
-                      ),
-                    ),
                     Expanded(
-                      child: Container(
-                        color: Color(0xFF263238),
-                        height: 80,
-                        child: TabBarView(
-                          controller: _controller,
-                          children: [
-                            Card(
-                              child: Home(),
-                            ),
-                            Card(
-                              child: Favourites(),
-                            )
-                          ],
+                      // child: searchTextField =
+                      //     AutoCompleteTextField<WallpaperModel>(
+                      //   key: key,
+                      //   clearOnSubmit: false,
+                      //   suggestions: wallpaper,
+                      //   decoration: InputDecoration(
+                      //     border: InputBorder.none,
+                      //     hintText: "Search Wallpaper",
+                      //   ),
+                      //   itemFilter: (item, query) {
+                      //     return item.photographer
+                      //         .toLowerCase()
+                      //         .startsWith(query.toLowerCase());
+                      //   },
+                      //   itemSorter: (a, b) {
+                      //     return a.photographer.compareTo(b.photographer);
+                      //   },
+                      //   itemSubmitted: (item) {
+                      //     setState(() {
+                      //       searchTextField.textField.controller.text =
+                      //           item.photographer;
+                      //     });
+                      //   },
+                      //   itemBuilder: (context, item) {
+                      //     return row(item);
+                      //   },
+                      // ),
+                      child: TextField(
+                        controller: searchEditingController,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Search Wallpaper",
                         ),
                       ),
-                    )
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Search(
+                                      searchQuery: searchEditingController.text,
+                                    )));
+                      },
+                      child: Container(child: Icon(Icons.search)),
+                    ),
                   ],
                 ),
               ),
-            )
-          ],
+              SizedBox(
+                height: 10.0,
+              ),
+              Container(
+                height: 60,
+                child: ListView.builder(
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      return CategoriesTile(
+                        title: categories[index].catagoriesName,
+                        imgURL: categories[index].imgURL,
+                      );
+                    }),
+              ),
+              Expanded(
+                flex: 1,
+                child: Scaffold(
+                  body: Column(
+                    children: [
+                      Container(
+                        child: TabBar(
+                          controller: _controller,
+                          labelColor: Colors.black,
+                          tabs: [
+                            Tab(
+                              icon: const Icon(
+                                Icons.trending_up,
+                                color: Colors.black,
+                              ),
+                              text: "Trending",
+                            ),
+                            Tab(
+                              icon: const Icon(
+                                Icons.favorite,
+                                color: Colors.black,
+                              ),
+                              text: "Favourite",
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          color: Colors.white,
+                          height: 10,
+                          child: TabBarView(
+                            controller: _controller,
+                            children: [
+                              Card(
+                                child: Home(),
+                              ),
+                              Card(
+                                child: Favourites(),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

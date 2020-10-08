@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'splash',
+      title: 'Incredible 4K wallpapers 2020',
       theme: ThemeData(
           backgroundColor: Colors.white,
           scaffoldBackgroundColor: Colors.white,
