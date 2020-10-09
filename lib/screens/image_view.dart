@@ -227,18 +227,20 @@ class _ImageViewState extends State<ImageView> {
               int location = WallpaperManager.LOCK_SCREEN;
 
               try {
-                dio.download(values, localpath,
-                    onReceiveProgress: (rec, total) {
-                  print("Rec:$rec,Total:$total");
-                  setState(() {
-                    downloading = true;
-                    progressString =
-                        ((rec / total) * 100).toStringAsFixed(0) + "%";
-                  });
-                });
+                dio.download(values, localpath);
+
                 print(localpath);
                 setState(() {
+                  downloading = false;
                   _localpath = localpath;
+                });
+
+                setState(() {
+                  downloading = false;
+                  BotToast.showSimpleNotification(
+                      title:
+                          "Setting as wallpaper...it might take  few seconds",
+                      duration: Duration(seconds: 3));
                 });
 
                 //print(context);
