@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:splash/Providers/themeProvider.dart';
 import 'package:splash/data/data.dart';
 import 'package:splash/model/categories_model.dart';
 import 'package:splash/model/wallpaper_model.dart';
@@ -83,15 +85,21 @@ class _TabBarSplashState extends State<TabBarSplash>
 
   @override
   Widget build(BuildContext context) {
+    var settingsProvider = Provider.of<SettingsProvider>(context);
     return Container(
+      color: !settingsProvider.darkTheme
+          ? Color(0xff292929)
+          : Colors.white, //DARK THEME HERE
       width: MediaQuery.of(context).size.width,
       height: 48.0,
-      color: Colors.white,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: !settingsProvider.darkTheme
+              ? Color(0xff292929)
+              : Colors.white, //DARK THEME HERE
           body: Column(
             children: [
-              AppName(),
+              AppName(settingsProvider.darkTheme),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30.0),
@@ -172,24 +180,33 @@ class _TabBarSplashState extends State<TabBarSplash>
               Expanded(
                 flex: 1,
                 child: Scaffold(
+                  backgroundColor: !settingsProvider.darkTheme
+                      ? Color(0xff292929)
+                      : Colors.white, //DARK THEME HERE
                   body: Column(
                     children: [
                       Container(
                         child: TabBar(
                           controller: _controller,
-                          labelColor: Colors.black,
+                          labelColor: !settingsProvider.darkTheme
+                              ? Colors.white
+                              : Colors.black, //DARK THEME HERE
                           tabs: [
                             Tab(
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.trending_up,
-                                color: Colors.black,
+                                color: !settingsProvider.darkTheme
+                                    ? Colors.white
+                                    : Colors.black, //DARK THEME HERE
                               ),
                               text: "Trending",
                             ),
                             Tab(
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.favorite,
-                                color: Colors.black,
+                                color: !settingsProvider.darkTheme
+                                    ? Colors.white
+                                    : Colors.black, //DARK THEME HERE
                               ),
                               text: "Favourite",
                             ),
@@ -198,7 +215,9 @@ class _TabBarSplashState extends State<TabBarSplash>
                       ),
                       Expanded(
                         child: Container(
-                          color: Colors.white,
+                          color: !settingsProvider.darkTheme
+                              ? Colors.black
+                              : Colors.white, //DARK THEME HERE
                           height: 10,
                           child: TabBarView(
                             controller: _controller,

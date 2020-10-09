@@ -1,13 +1,16 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:splash/screens/splash_screen.dart';
+import 'Providers/themeProvider.dart';
 import 'constant.dart';
 import 'routs.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(ChangeNotifierProvider(
+      create: (BuildContext context) => SettingsProvider(),
+      child: MyApp(),
+    ));
 
 class MyApp extends StatelessWidget {
   @override
@@ -18,7 +21,7 @@ class MyApp extends StatelessWidget {
       builder: BotToastInit(), //1. call BotToastInit
       navigatorObservers: [BotToastNavigatorObserver()],
       theme: ThemeData(
-          backgroundColor: Colors.white,
+          backgroundColor: Color(0xff292929),
           scaffoldBackgroundColor: Colors.white,
           fontFamily: "mulish",
           visualDensity: VisualDensity.adaptivePlatformDensity,

@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:splash/Providers/themeProvider.dart';
 import 'package:splash/constant.dart';
 import 'package:splash/data/data.dart';
 import 'package:splash/model/categories_model.dart';
@@ -69,7 +71,11 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    var settingsProvider = Provider.of<SettingsProvider>(context);
     return Scaffold(
+      backgroundColor: !settingsProvider.darkTheme
+          ? Color(0xff292929)
+          : Colors.white, //DARK THEME HERE
       body: SingleChildScrollView(
         child: loading
             ? Padding(

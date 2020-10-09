@@ -1,41 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:splash/components/theme_toggle.dart';
 import 'package:splash/constant.dart';
 import 'package:splash/model/wallpaper_model.dart';
 import 'package:splash/size_config.dart';
 import 'package:splash/screens/image_view.dart';
 
-Widget AppName() {
+Widget AppName(bool darkTheme) {
   return Hero(
     tag: "appTitle",
     transitionOnUserGestures: true,
     child: Material(
       type: MaterialType.transparency,
       child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Image.asset(
-                  "images/appIcon.jpeg",
-                  height: 35,
-                  width: 35,
+        child: Container(
+          color:
+              !darkTheme ? Color(0xff292929) : Colors.white, //DARK THEME HERE
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Image.asset(
+                    "images/appIcon.jpeg",
+                    height: 35,
+                    width: 35,
+                  ),
                 ),
-              ),
-              SizedBox(
-                width: 18.0,
-              ),
-              Text(
-                "Incredible 4K wallpapers 2020",
-                style: TextStyle(
-                    fontSize: getProportionateScreenWidth(14),
-                    color: Color(0xff263238),
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "mulish"),
-              ),
-            ],
+                SizedBox(
+                  width: 18.0,
+                ),
+                Text(
+                  "Incredible 4K wallpapers 2020",
+                  style: TextStyle(
+                      fontSize: getProportionateScreenWidth(14),
+                      color: !darkTheme
+                          ? Colors.white
+                          : Colors
+                              .black, //DARK THEME HERE--------------------------------------
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "mulish"),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Container(
+                    width: 70,
+                    height: 35,
+                    child: CrazySwitch(),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

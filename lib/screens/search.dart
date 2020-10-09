@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:splash/Providers/themeProvider.dart';
 import 'package:splash/widgets/widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:splash/data/data.dart';
@@ -26,20 +28,23 @@ class _SearchState extends State<Search> {
   bool loading = true;
 
   Widget row(WallpaperModel wallpaperModel) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          wallpaperModel.photographer,
-          style: TextStyle(fontSize: 16.0),
-        ),
-        SizedBox(
-          width: 10.0,
-        ),
-        Text(
-          wallpaperModel.photographerURL,
-        )
-      ],
+    return Container(
+      color: Color(0xff292929), //DARK THEME HERE
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            wallpaperModel.photographer,
+            style: TextStyle(fontSize: 16.0),
+          ),
+          SizedBox(
+            width: 10.0,
+          ),
+          Text(
+            wallpaperModel.photographerURL,
+          )
+        ],
+      ),
     );
   }
 
@@ -85,12 +90,18 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
+    var settingsProvider = Provider.of<SettingsProvider>(context);
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Scaffold(
+        backgroundColor: !settingsProvider.darkTheme
+            ? Color(0xff292929)
+            : Colors.white, //DARK THEME HERE
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
+          backgroundColor: !settingsProvider.darkTheme
+              ? Color(0xff292929)
+              : Colors.white, //DARK THEME HERE
           title: Row(
             children: [
               IconButton(
@@ -99,7 +110,10 @@ class _SearchState extends State<Search> {
                 },
                 icon: Icon(
                   Icons.arrow_back,
-                  color: Colors.black,
+                  color: !settingsProvider.darkTheme
+                      ? Colors.white
+                      : Colors
+                          .black, //DARK THEME HERE------------------------------
                 ),
               ),
               Padding(
@@ -108,7 +122,10 @@ class _SearchState extends State<Search> {
                   "Search",
                   style: TextStyle(
                       fontSize: getProportionateScreenWidth(25),
-                      color: Color(0xff263238),
+                      color: !settingsProvider.darkTheme
+                          ? Colors.white
+                          : Colors
+                              .black, //DARK THEME HERE------------------------------
                       fontWeight: FontWeight.bold,
                       fontFamily: "mulish"),
                 ),

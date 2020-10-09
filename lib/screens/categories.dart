@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:splash/Providers/themeProvider.dart';
 import 'package:splash/data/data.dart';
 import 'package:splash/model/wallpaper_model.dart';
 import 'package:splash/widgets/Mydemo.dart';
@@ -51,11 +53,12 @@ class _CategoriesState extends State<Categories> {
 
   @override
   Widget build(BuildContext context) {
+    var settingsProvider = Provider.of<SettingsProvider>(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        title: AppName(),
+        title: AppName(settingsProvider.darkTheme),
         elevation: 0.0,
       ),
       body: SingleChildScrollView(

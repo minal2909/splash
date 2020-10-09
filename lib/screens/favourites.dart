@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:splash/Providers/themeProvider.dart';
 import 'package:splash/data/utilities.dart';
 import 'package:splash/model/wallpaper_model.dart';
 import 'package:splash/screens/image_view.dart';
@@ -50,8 +51,11 @@ class _FavouritesState extends State<Favourites> {
   @override
   Widget build(BuildContext context) {
     //var myDatabase = Provider.of<MyDatabase>(context);
-
+    var settingsProvider = Provider.of<SettingsProvider>(context);
     return Scaffold(
+      backgroundColor: !settingsProvider.darkTheme
+          ? Color(0xff292929)
+          : Colors.white, //DARK THEME HERE
       body: SingleChildScrollView(
         child: Container(
           child: Column(
