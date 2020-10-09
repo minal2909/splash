@@ -166,27 +166,41 @@ class _ImageViewState extends State<ImageView> {
               int location = WallpaperManager.HOME_SCREEN;
 
               try {
-                var response = await Dio().get(widget.imgURL,
-                    options: Options(responseType: ResponseType.bytes),
-                    onReceiveProgress: (rec, total) {
-                  print("Rec: $rec, Total:$total");
-                  setState(() {
-                    downloading = true;
-                    progressString =
-                        ((rec / total) * 100).toStringAsFixed(0) + "%";
-                  });
-                });
+                // var response = await Dio().get(widget.imgURL,
+                //     options: Options(responseType: ResponseType.bytes),
+                //     onReceiveProgress: (rec, total) {
+                //   print("Rec: $rec, Total:$total");
+                //   setState(() {
+                //     downloading = true;
+                //     progressString =
+                //         ((rec / total) * 100).toStringAsFixed(0) + "%";
+                //   });
+                // });
 
-                dio.download(values, localpath,
-                    onReceiveProgress: (rec, total) {});
+                dio.download(values, localpath);
+                //onReceiveProgress: (rec, total) {
+                // print("Rec: $rec, Total:$total");
+                // setState(() {
+                //   downloading = true;
+                //   progressString =
+                //       ((rec / total) * 100).toStringAsFixed(0) + "%";
+                // });
+                //})
                 setState(() {
+                  downloading = false;
                   _localpath = localpath;
                 });
 
                 setState(() {
                   downloading = false;
-                  BotToast.showText(text: "wall paper set successfully");
-                  progressString = "wall paper set";
+                  BotToast.showSimpleNotification(
+                    title: "Setting as wallpaper...it might take  few seconds",
+                    duration: Duration(seconds: 3),
+                  );
+
+                  // BotToast.showText(
+                  //     text: "Setting as wallpaer...it will take a few seconds");
+                  // progressString = "wall paper set";
                 });
                 //print(context);
                 WallpaperManager.setWallpaperFromFile(localpath, location);

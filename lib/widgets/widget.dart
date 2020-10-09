@@ -14,7 +14,7 @@ Widget AppName() {
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
@@ -24,10 +24,13 @@ Widget AppName() {
                   width: 35,
                 ),
               ),
+              SizedBox(
+                width: 18.0,
+              ),
               Text(
                 "Incredible 4K wallpapers 2020",
                 style: TextStyle(
-                    fontSize: getProportionateScreenWidth(18),
+                    fontSize: getProportionateScreenWidth(14),
                     color: Color(0xff263238),
                     fontWeight: FontWeight.bold,
                     fontFamily: "mulish"),
