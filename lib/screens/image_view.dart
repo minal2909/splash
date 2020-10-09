@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -53,6 +54,7 @@ class _ImageViewState extends State<ImageView> {
   List<dynamic> data;
   bool liked = false;
   bool downloading = false;
+  bool _showOverlay = false;
   var progressString = "";
   var onSetWallpaper = "Wallpaper set";
 
@@ -124,6 +126,8 @@ class _ImageViewState extends State<ImageView> {
 
     setState(() {
       downloading = false;
+      _showOverlay = true;
+      BotToast.showText(text: "Downloaded");
       progressString = "Completed";
     });
 
@@ -181,6 +185,7 @@ class _ImageViewState extends State<ImageView> {
 
                 setState(() {
                   downloading = false;
+                  BotToast.showText(text: "wall paper set successfully");
                   progressString = "wall paper set";
                 });
                 //print(context);
