@@ -24,6 +24,7 @@ import 'package:splash/data/data.dart';
 import 'package:wallpaper_manager/wallpaper_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 List<String> imgList = [];
 enum SetWallpaperAs { Home, Lock, Both }
@@ -51,6 +52,9 @@ class _ImageViewState extends State<ImageView> {
   String _localpath;
   List<dynamic> data;
   bool liked = false;
+  bool downloading = false;
+  var progressString = "";
+  var onSetWallpaper = "Wallpaper set";
 
   @override
   void initState() {
@@ -100,6 +104,46 @@ class _ImageViewState extends State<ImageView> {
     });
   }
 
+  _save() async {
+    if (Platform.isAndroid) {
+      await _askPermission();
+    }
+
+    var response = await Dio()
+        .get(widget.imgURL, options: Options(responseType: ResponseType.bytes),
+            onReceiveProgress: (rec, total) {
+      print("Rec: $rec, Total:$total");
+      setState(() {
+        downloading = true;
+        progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
+      });
+    });
+    final result =
+        await ImageGallerySaver.saveImage(Uint8List.fromList(response.data));
+    print(result);
+
+    setState(() {
+      downloading = false;
+      progressString = "Completed";
+    });
+
+    Navigator.pop(context);
+  }
+
+  static Future<bool> _askPermission() async {
+    final PermissionStatus permission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.storage);
+    if (permission != PermissionStatus.granted) {
+      final Map<PermissionGroup, PermissionStatus> permissions =
+          await PermissionHandler()
+              .requestPermissions(<PermissionGroup>[PermissionGroup.storage]);
+      if (permissions[PermissionGroup.storage] != PermissionStatus.granted) {
+        return null;
+      }
+    }
+    return true;
+  }
+
   _onTapProcess(context, values) {
     return CupertinoActionSheet(
       title: Text("Set as Wallpaper"),
@@ -118,9 +162,26 @@ class _ImageViewState extends State<ImageView> {
               int location = WallpaperManager.HOME_SCREEN;
 
               try {
-                dio.download(values, localpath);
+                var response = await Dio().get(widget.imgURL,
+                    options: Options(responseType: ResponseType.bytes),
+                    onReceiveProgress: (rec, total) {
+                  print("Rec: $rec, Total:$total");
+                  setState(() {
+                    downloading = true;
+                    progressString =
+                        ((rec / total) * 100).toStringAsFixed(0) + "%";
+                  });
+                });
+
+                dio.download(values, localpath,
+                    onReceiveProgress: (rec, total) {});
                 setState(() {
                   _localpath = localpath;
+                });
+
+                setState(() {
+                  downloading = false;
+                  progressString = "wall paper set";
                 });
                 //print(context);
                 WallpaperManager.setWallpaperFromFile(localpath, location);
@@ -147,16 +208,30 @@ class _ImageViewState extends State<ImageView> {
               int location = WallpaperManager.LOCK_SCREEN;
 
               try {
-                dio.download(values, localpath);
+                dio.download(values, localpath,
+                    onReceiveProgress: (rec, total) {
+                  print("Rec:$rec,Total:$total");
+                  setState(() {
+                    downloading = true;
+                    progressString =
+                        ((rec / total) * 100).toStringAsFixed(0) + "%";
+                  });
+                });
                 print(localpath);
                 setState(() {
                   _localpath = localpath;
                 });
+
                 //print(context);
                 WallpaperManager.setWallpaperFromFile(localpath, location);
               } on PlatformException catch (e) {
                 print(e);
               }
+
+              setState(() {
+                downloading = false;
+                progressString = "wall paper set";
+              });
 
               Navigator.pop(context);
             } else {}
@@ -203,179 +278,192 @@ class _ImageViewState extends State<ImageView> {
                     ),
             ),
           ),
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            alignment: Alignment.bottomCenter,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        if (kIsWeb) {
-                          _launchURL(widget.imgURL);
-                        } else {
-                          _save();
-                        }
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Color(0xff1c1b1b).withOpacity(0.6),
-                        ),
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.black.withOpacity(0.6),
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.white60,
-                            ),
-                            gradient: LinearGradient(
-                              colors: [
-                                Color(0x36ffffff),
-                                Color(0x0ffffff),
-                              ],
-                            ),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          child: Icon(
-                            Icons.file_download,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+          downloading
+              ? Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(60.0),
                     ),
-                    InkWell(
-                      onTap: () {
-                        showDialog(
-                            // print(
-                            context: context,
-                            builder: (context) =>
-                                _onTapProcess(context, widget.imgURL));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Color(0xff1c1b1b).withOpacity(0.6),
+                    height: 160.0,
+                    width: 200.0,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SpinKitRing(
+                          color: Colors.white54,
+                          size: 60.0,
                         ),
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.black.withOpacity(0.6),
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.white60,
-                            ),
-                            gradient: LinearGradient(
-                              colors: [
-                                Color(0x36ffffff),
-                                Color(0x0ffffff),
-                              ],
-                            ),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          child: Icon(
-                            Icons.wallpaper,
-                            color: Colors.white,
-                          ),
+                        SizedBox(
+                          height: 10.0,
                         ),
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Color(0xff1c1b1b).withOpacity(0.6),
-                      ),
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.black.withOpacity(0.6),
-                          border: Border.all(
-                            width: 1,
-                            color: Colors.white60,
-                          ),
-                          gradient: LinearGradient(
-                            colors: [
-                              Color(0x36ffffff),
-                              Color(0x0ffffff),
-                            ],
-                          ),
-                        ),
-                        // padding:
-                        //     EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: IconButton(
-                          onPressed: () {
-                            _pressed(widget.imgURL);
-                          },
-                          alignment: Alignment.center,
-                          icon: Icon(
-                            !liked ? Icons.favorite_border : Icons.favorite,
-                            color: !liked ? Colors.white : Colors.redAccent,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    "Cancel",
-                    style: TextStyle(
-                      color: Colors.white,
+                        Text(
+                          "Downloding...$progressString",
+                          style: TextStyle(color: Colors.white),
+                        )
+                      ],
                     ),
                   ),
-                ),
-                SizedBox(height: 50),
-              ],
-            ),
-          )
+                )
+              : Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.bottomCenter,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      // Container(
+                      //     height: 40.0,
+                      //     child: Card(
+                      //         color: Colors.white60,
+                      //         child: Padding(
+                      //           padding: const EdgeInsets.all(8.0),
+                      //           child: Text(onSetWallpaper),
+                      //         ))),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              if (kIsWeb) {
+                                _launchURL(widget.imgURL);
+                              } else {
+                                _save();
+                              }
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Color(0xff1c1b1b).withOpacity(0.6),
+                              ),
+                              child: Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Colors.black.withOpacity(0.6),
+                                  border: Border.all(
+                                    width: 1,
+                                    color: Colors.white60,
+                                  ),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0x36ffffff),
+                                      Color(0x0ffffff),
+                                    ],
+                                  ),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                child: Icon(
+                                  Icons.file_download,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              showDialog(
+                                  // print(
+                                  context: context,
+                                  builder: (context) =>
+                                      _onTapProcess(context, widget.imgURL));
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Color(0xff1c1b1b).withOpacity(0.6),
+                              ),
+                              child: Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Colors.black.withOpacity(0.6),
+                                  border: Border.all(
+                                    width: 1,
+                                    color: Colors.white60,
+                                  ),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0x36ffffff),
+                                      Color(0x0ffffff),
+                                    ],
+                                  ),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                child: Icon(
+                                  Icons.wallpaper,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Color(0xff1c1b1b).withOpacity(0.6),
+                            ),
+                            child: Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.black.withOpacity(0.6),
+                                border: Border.all(
+                                  width: 1,
+                                  color: Colors.white60,
+                                ),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color(0x36ffffff),
+                                    Color(0x0ffffff),
+                                  ],
+                                ),
+                              ),
+                              // padding:
+                              //     EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              child: IconButton(
+                                onPressed: () {
+                                  _pressed(widget.imgURL);
+                                },
+                                alignment: Alignment.center,
+                                icon: Icon(
+                                  !liked
+                                      ? Icons.favorite_border
+                                      : Icons.favorite,
+                                  color:
+                                      !liked ? Colors.white : Colors.redAccent,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 16.0,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 50),
+                    ],
+                  ),
+                )
         ],
       ),
     );
-  }
-
-  _save() async {
-    if (Platform.isAndroid) {
-      await _askPermission();
-    }
-
-    var response = await Dio()
-        .get(widget.imgURL, options: Options(responseType: ResponseType.bytes));
-    final result =
-        await ImageGallerySaver.saveImage(Uint8List.fromList(response.data));
-    print(result);
-    Navigator.pop(context);
-  }
-
-  static Future<bool> _askPermission() async {
-    final PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage);
-    if (permission != PermissionStatus.granted) {
-      final Map<PermissionGroup, PermissionStatus> permissions =
-          await PermissionHandler()
-              .requestPermissions(<PermissionGroup>[PermissionGroup.storage]);
-      if (permissions[PermissionGroup.storage] != PermissionStatus.granted) {
-        return null;
-      }
-    }
-    return true;
   }
 }
