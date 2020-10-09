@@ -365,8 +365,6 @@ class _ImageViewState extends State<ImageView> {
     Navigator.pop(context);
   }
 
-  
-
   static Future<bool> _askPermission() async {
     final PermissionStatus permission = await PermissionHandler()
         .checkPermissionStatus(PermissionGroup.storage);

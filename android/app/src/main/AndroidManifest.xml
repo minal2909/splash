@@ -14,7 +14,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="splash"
+        android:label="Incredible 4K Wallpapers 2020"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
