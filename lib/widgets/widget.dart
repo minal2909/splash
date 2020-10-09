@@ -12,23 +12,26 @@ Widget AppName() {
       type: MaterialType.transparency,
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(15.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Image.asset(
+                  "images/appIcon.jpeg",
+                  height: 35,
+                  width: 35,
+                ),
+              ),
               Text(
                 "Incredible 4K wallpapers 2020",
                 style: TextStyle(
-                    fontSize: getProportionateScreenWidth(20),
+                    fontSize: getProportionateScreenWidth(18),
                     color: Color(0xff263238),
                     fontWeight: FontWeight.bold,
                     fontFamily: "mulish"),
               ),
-              Image.asset(
-                "images/appIcon.jpeg",
-                height: 25,
-                width: 25,
-              )
             ],
           ),
         ),
