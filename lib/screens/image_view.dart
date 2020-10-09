@@ -4,7 +4,8 @@ import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:splash/data/utilities.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
@@ -22,6 +23,16 @@ import 'package:http/http.dart' as http;
 import 'package:splash/data/data.dart';
 import 'package:wallpaper_manager/wallpaper_manager.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+
+List<String> imgList = [];
+enum SetWallpaperAs { Home, Lock, Both }
+
+const _setAs = {
+  SetWallpaperAs.Home: WallpaperManager.HOME_SCREEN,
+  SetWallpaperAs.Lock: WallpaperManager.LOCK_SCREEN,
+  SetWallpaperAs.Both: WallpaperManager.BOTH_SCREENS,
+};
 
 class ImageView extends StatefulWidget {
   static String routeName = "/imageView";
@@ -39,8 +50,27 @@ class _ImageViewState extends State<ImageView> {
   var filePath;
   String _localpath;
   List<dynamic> data;
-
   bool liked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    isImagePresent(widget.imgURL);
+  }
+
+  Future<void> isImagePresent(String imgUrl) async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    List<String> images = preferences.getStringList("FAVOURITES");
+    if (images.indexOf((imgUrl)) >= 0) {
+      setState(() {
+        liked = true;
+      });
+    } else {
+      setState(() {
+        liked = false;
+      });
+    }
+  }
 
   Future<String> getimages() async {
     var getdata = await http.get(
@@ -53,7 +83,18 @@ class _ImageViewState extends State<ImageView> {
     return "Success";
   }
 
-  _pressed() {
+  _pressed(String imgURL) async {
+    print(imgURL);
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    if (!liked) {
+      imgList.add(imgURL);
+      preferences.setStringList("FAVOURITES", imgList);
+      // preferences.setString(imgURL, imgAsString);
+    } else if (liked) {
+      imgList.remove(imgURL);
+      preferences.setStringList("FAVOURITES", imgList);
+      // preferences.remove("FAVOURITES");
+    }
     setState(() {
       liked = !liked;
     });
@@ -107,6 +148,7 @@ class _ImageViewState extends State<ImageView> {
 
               try {
                 dio.download(values, localpath);
+                print(localpath);
                 setState(() {
                   _localpath = localpath;
                 });
@@ -275,12 +317,12 @@ class _ImageViewState extends State<ImageView> {
                         //     EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: IconButton(
                           onPressed: () {
-                            _pressed();
+                            _pressed(widget.imgURL);
                           },
                           alignment: Alignment.center,
                           icon: Icon(
-                            liked ? Icons.favorite : Icons.favorite_border,
-                            color: liked ? Colors.redAccent : Colors.white,
+                            !liked ? Icons.favorite_border : Icons.favorite,
+                            color: !liked ? Colors.white : Colors.redAccent,
                           ),
                         ),
                       ),
@@ -323,16 +365,7 @@ class _ImageViewState extends State<ImageView> {
     Navigator.pop(context);
   }
 
-  // _askPermission() async {
-  //   if (Platform.isIOS) {
-  //     //Map<PermissionGroup, PermissionStatus> permissions =
-  //
-  //     await PermissionHandler().requestPermissions([PermissionGroup.photos]);
-  //   } else {
-  //     //PermissionStatus permission =
-  //     await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
-  //   }
-  // }
+  
 
   static Future<bool> _askPermission() async {
     final PermissionStatus permission = await PermissionHandler()

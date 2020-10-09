@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:splash/widgets/widget.dart';
 import 'package:http/http.dart' as http;
@@ -23,6 +23,7 @@ class _SearchState extends State<Search> {
   List<WallpaperModel> wallpaper = new List();
   AutoCompleteTextField searchTextField;
   GlobalKey<AutoCompleteTextFieldState<WallpaperModel>> key = new GlobalKey();
+  bool loading = true;
 
   Widget row(WallpaperModel wallpaperModel) {
     return Row(
@@ -47,6 +48,14 @@ class _SearchState extends State<Search> {
         "https://api.pexels.com/v1/search?query=$query&per_page=80",
         headers: {"Authorization": apiKey});
 
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+    } else {
+      print("user getting error");
+    }
+
     Map<String, dynamic> jsonData = jsonDecode(response.body);
     jsonData["photos"].forEach((element) {
       //print(element);
@@ -64,6 +73,14 @@ class _SearchState extends State<Search> {
     getSearchWallpapers(widget.searchQuery);
     super.initState();
     searchEditingController.text = widget.searchQuery;
+  }
+
+  void _handleSubmitted(String value) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return Search(
+        searchQuery: value,
+      );
+    }));
   }
 
   @override
@@ -101,76 +118,85 @@ class _SearchState extends State<Search> {
           elevation: 0.0,
         ),
         body: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    color: Color(0xfff5f8fd),
+          child: loading
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 300.0),
+                  child: SpinKitRing(
+                    color: Color(0xff37474f),
+                    size: 60.0,
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 24.0),
-                  margin: EdgeInsets.symmetric(horizontal: 24.0),
-                  child: Row(
+                )
+              : Container(
+                  child: Column(
                     children: [
-                      Expanded(
-                        // child: searchTextField =
-                        //     AutoCompleteTextField<WallpaperModel>(
-                        //   key: key,
-                        //   clearOnSubmit: false,
-                        //   suggestions: wallpaper,
-                        //   decoration: InputDecoration(
-                        //     border: InputBorder.none,
-                        //     hintText: "Search Wallpaper",
-                        //   ),
-                        //   itemFilter: (item, query) {
-                        //     return item.photographer
-                        //         .toLowerCase()
-                        //         .startsWith(query.toLowerCase());
-                        //   },
-                        //   itemSorter: (a, b) {
-                        //     return a.photographer.compareTo(b.photographer);
-                        //   },
-                        //   itemSubmitted: (item) {
-                        //     setState(() {
-                        //       searchTextField.textField.controller.text =
-                        //           item.photographer;
-                        //     });
-                        //   },
-                        //   itemBuilder: (context, item) {
-                        //     return row(item);
-                        //   },
-                        // ),
-                        child: TextField(
-                          controller: searchEditingController,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Search Wallpaper",
-                          ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30.0),
+                          color: Color(0xfff5f8fd),
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 24.0),
+                        margin: EdgeInsets.symmetric(horizontal: 24.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              // child: searchTextField =
+                              //     AutoCompleteTextField<WallpaperModel>(
+                              //   key: key,
+                              //   clearOnSubmit: false,
+                              //   suggestions: wallpaper,
+                              //   decoration: InputDecoration(
+                              //     border: InputBorder.none,
+                              //     hintText: "Search Wallpaper",
+                              //   ),
+                              //   itemFilter: (item, query) {
+                              //     return item.photographer
+                              //         .toLowerCase()
+                              //         .startsWith(query.toLowerCase());
+                              //   },
+                              //   itemSorter: (a, b) {
+                              //     return a.photographer.compareTo(b.photographer);
+                              //   },
+                              //   itemSubmitted: (item) {
+                              //     setState(() {
+                              //       searchTextField.textField.controller.text =
+                              //           item.photographer;
+                              //     });
+                              //   },
+                              //   itemBuilder: (context, item) {
+                              //     return row(item);
+                              //   },
+                              // ),
+                              child: TextField(
+                                controller: searchEditingController,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Search Wallpaper",
+                                ),
+                                onSubmitted: _handleSubmitted,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Search(
+                                              searchQuery:
+                                                  searchEditingController.text,
+                                            )));
+                              },
+                              child: Container(child: Icon(Icons.search)),
+                            ),
+                          ],
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Search(
-                                        searchQuery:
-                                            searchEditingController.text,
-                                      )));
-                        },
-                        child: Container(child: Icon(Icons.search)),
+                      SizedBox(
+                        height: 16.0,
                       ),
+                      wallpaperList(wallpaper: wallpaper, context: context),
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                wallpaperList(wallpaper: wallpaper, context: context),
-              ],
-            ),
-          ),
         ),
       ),
     );

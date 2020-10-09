@@ -2,13 +2,14 @@ class WallpaperModel {
   String photographer;
   String photographerURL;
   int photographerID;
-
+  bool liked;
   SrcModel src;
 
   WallpaperModel({
     this.photographerURL,
     this.photographerID,
     this.photographer,
+    this.liked,
     this.src,
   });
 
@@ -17,6 +18,7 @@ class WallpaperModel {
         photographerURL: jsonData["photographer_url"],
         photographerID: jsonData["photographer_id"],
         photographer: jsonData["photographer"],
+        liked: jsonData["liked"],
         src: SrcModel.fromMap(jsonData["src"]));
   }
 }

@@ -71,7 +71,10 @@ class _BodyState extends State<Body> {
                       defaultButton(
                         text: "Continue",
                         press: () {
-                          Navigator.pushNamed(context, MyDemo.routeName);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyDemo()));
                         },
                       ),
                       Spacer(),

@@ -1,7 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:splash/data/utilities.dart';
 import 'package:splash/model/wallpaper_model.dart';
+import 'package:splash/screens/image_view.dart';
 import 'package:splash/widgets/widget.dart';
 import 'package:provider/provider.dart';
+import 'image_view.dart';
 
 class Favourites extends StatefulWidget {
   @override
@@ -15,7 +21,30 @@ class _FavouritesState extends State<Favourites> {
   @override
   void initState() {
     super.initState();
-    _favourites = [];
+    getImages();
+  }
+
+  Future<void> getImages() async {
+    Map<String, dynamic> jsonData;
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    List<String> imagesList = preferences.getStringList("FAVOURITES");
+    for (int i = 0; i < imagesList.length; i++) {
+      Map<String, dynamic> data;
+      WallpaperModel wallpaperModel = new WallpaperModel();
+      wallpaperModel = WallpaperModel.fromMap({
+        "photographerURL": "",
+        "photographerID": "",
+        "photographer": "",
+        "src": {
+          "portrait": imagesList[i],
+          "large": " ",
+          "landscape": " ",
+          "medium": " "
+        }
+      });
+      wallpaper.add(wallpaperModel);
+      setState(() {});
+    }
   }
 
   @override

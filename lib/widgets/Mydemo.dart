@@ -73,6 +73,14 @@ class _TabBarSplashState extends State<TabBarSplash>
     });
   }
 
+  void _handleSubmitted(String value) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return Search(
+        searchQuery: value,
+      );
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -127,6 +135,7 @@ class _TabBarSplashState extends State<TabBarSplash>
                           border: InputBorder.none,
                           hintText: "Search Wallpaper",
                         ),
+                        onSubmitted: _handleSubmitted,
                       ),
                     ),
                     GestureDetector(

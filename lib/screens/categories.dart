@@ -1,9 +1,10 @@
 import 'dart:convert';
-
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:splash/data/data.dart';
 import 'package:splash/model/wallpaper_model.dart';
+import 'package:splash/widgets/Mydemo.dart';
 import 'package:splash/widgets/widget.dart';
 
 class Categories extends StatefulWidget {
@@ -16,11 +17,20 @@ class Categories extends StatefulWidget {
 
 class _CategoriesState extends State<Categories> {
   List<WallpaperModel> wallpaper = new List();
+  bool loading = true;
 
   void getSearchWallpapers(String query) async {
     http.Response response = await http.get(
         "https://api.pexels.com/v1/search?query=$query&per_page=80",
         headers: {"Authorization": apiKey});
+
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+    } else {
+      print("user getting error");
+    }
 
     Map<String, dynamic> jsonData = jsonDecode(response.body);
     jsonData["photos"].forEach((element) {
@@ -34,7 +44,6 @@ class _CategoriesState extends State<Categories> {
     setState(() {});
   }
 
-  @override
   void initState() {
     getSearchWallpapers(widget.categoryName);
     super.initState();
@@ -50,16 +59,24 @@ class _CategoriesState extends State<Categories> {
         elevation: 0.0,
       ),
       body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 16.0,
+        child: loading
+            ? Padding(
+                padding: const EdgeInsets.symmetric(vertical: 300.0),
+                child: SpinKitRing(
+                  color: Color(0xff37474f),
+                  size: 60.0,
+                ),
+              )
+            : Container(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 16.0,
+                    ),
+                    wallpaperList(wallpaper: wallpaper, context: context),
+                  ],
+                ),
               ),
-              wallpaperList(wallpaper: wallpaper, context: context),
-            ],
-          ),
-        ),
       ),
     );
   }

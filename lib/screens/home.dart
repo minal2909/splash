@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:splash/constant.dart';
 import 'package:splash/data/data.dart';
 import 'package:splash/model/categories_model.dart';
 import 'package:splash/model/wallpaper_model.dart';
@@ -23,11 +24,19 @@ class _HomeState extends State<Home> {
   List<WallpaperModel> wallpaper = new List();
   int noOfImageToLoad = 80;
   TextEditingController searchEditingController = new TextEditingController();
+  bool loading = true;
 
   void getTrendingWallpapers() async {
     http.Response response = await http.get(
         "https://api.pexels.com/v1/curated?per_page=$noOfImageToLoad&page=1",
         headers: {"Authorization": apiKey});
+    if (response.statusCode == 200) {
+      setState(() {
+        loading = false;
+      });
+    } else {
+      print("user getting error");
+    }
 
     Map<String, dynamic> jsonData = jsonDecode(response.body);
     jsonData["photos"].forEach((element) {
@@ -62,13 +71,21 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              wallpaperList(wallpaper: wallpaper, context: context),
-            ],
-          ),
-        ),
+        child: loading
+            ? Padding(
+                padding: const EdgeInsets.symmetric(vertical: 170.0),
+                child: SpinKitRing(
+                  color: Color(0xff37474f),
+                  size: 60.0,
+                ),
+              )
+            : Container(
+                child: Column(
+                  children: [
+                    wallpaperList(wallpaper: wallpaper, context: context),
+                  ],
+                ),
+              ),
       ),
     );
   }
