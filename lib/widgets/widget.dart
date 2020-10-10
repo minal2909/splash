@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:splash/components/theme_toggle.dart';
 import 'package:splash/constant.dart';
@@ -6,6 +7,12 @@ import 'package:splash/size_config.dart';
 import 'package:splash/screens/image_view.dart';
 
 Widget AppName(bool darkTheme) {
+  List<String> menu = [
+    "Theme change",
+    "Terms and Condition",
+    "Privacy policy",
+  ];
+
   return Hero(
     tag: "appTitle",
     transitionOnUserGestures: true,
@@ -43,13 +50,18 @@ Widget AppName(bool darkTheme) {
                       fontFamily: "mulish"),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Container(
-                    width: 70,
-                    height: 35,
-                    child: CrazySwitch(),
+                  padding: const EdgeInsets.only(left: 40.0),
+                  child: IconButton(
+                    onPressed: () {
+                      Menu();
+                    },
+                    icon: Icon(
+                      Icons.menu,
+                      size: 30.0,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
+                )
               ],
             ),
           ),
@@ -93,4 +105,61 @@ Widget wallpaperList({List<WallpaperModel> wallpaper, context}) {
           );
         }).toList()),
   );
+}
+
+class Menu extends StatefulWidget {
+  @override
+  _MenuState createState() => _MenuState();
+}
+
+class _MenuState extends State<Menu> {
+  int _value = 1;
+
+  @override
+  Widget build(BuildContext context) {
+    onMenuPressed() {
+      DropdownButton(
+        underline: SizedBox(),
+        value: _value,
+        items: [
+          DropdownMenuItem(
+            child: Row(
+              children: [
+                Container(
+                  width: 70,
+                  height: 35,
+                  child: CrazySwitch(),
+                ),
+                Text("Theme"),
+              ],
+            ),
+            value: 1,
+          ),
+          DropdownMenuItem(
+            child: Row(
+              children: [
+                Icon(Icons.arrow_forward_ios),
+                Text("Terms and Condition"),
+              ],
+            ),
+            value: 2,
+          ),
+          DropdownMenuItem(
+            child: Row(
+              children: [
+                Icon(Icons.arrow_forward_ios),
+                Text("Terms and Condition"),
+              ],
+            ),
+            value: 3,
+          )
+        ],
+        onChanged: (value) {
+          setState(() {
+            _value = value;
+          });
+        },
+      );
+    }
+  }
 }
