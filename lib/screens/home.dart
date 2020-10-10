@@ -88,6 +88,9 @@ class _HomeState extends State<Home> {
             : Container(
                 child: Column(
                   children: [
+                    SizedBox(
+                      height: 5.0,
+                    ),
                     wallpaperList(wallpaper: wallpaper, context: context),
                   ],
                 ),

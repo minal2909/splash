@@ -56,7 +56,7 @@ Widget AppName(bool darkTheme) {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
+                  padding: const EdgeInsets.only(left: 18.0),
                   child: Container(
                     child: Menu(),
                   ),

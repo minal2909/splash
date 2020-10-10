@@ -61,7 +61,7 @@ class _FavouritesState extends State<Favourites> {
           child: Column(
             children: [
               SizedBox(
-                height: 16.0,
+                height: 5.0,
               ),
               wallpaperList(wallpaper: wallpaper, context: context),
             ],

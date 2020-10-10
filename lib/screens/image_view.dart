@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui';
@@ -169,7 +170,7 @@ class _ImageViewState extends State<ImageView> {
                 //   });
                 // });
 
-                dio.download(values, localpath);
+                await dio.download(values, localpath);
                 //onReceiveProgress: (rec, total) {
                 // print("Rec: $rec, Total:$total");
                 // setState(() {
@@ -178,10 +179,12 @@ class _ImageViewState extends State<ImageView> {
                 //       ((rec / total) * 100).toStringAsFixed(0) + "%";
                 // });
                 //})
-                setState(() {
-                  downloading = false;
-                  _localpath = localpath;
-                });
+                // setState(() {
+                //   downloading = false;
+                //   _localpath = localpath;
+                // });
+                await WallpaperManager.setWallpaperFromFile(
+                    localpath, location);
 
                 setState(() {
                   downloading = false;
@@ -195,7 +198,7 @@ class _ImageViewState extends State<ImageView> {
                   // progressString = "wall paper set";
                 });
                 //print(context);
-                WallpaperManager.setWallpaperFromFile(localpath, location);
+
               } on PlatformException catch (e) {
                 print(e);
               }
@@ -219,32 +222,32 @@ class _ImageViewState extends State<ImageView> {
               int location = WallpaperManager.LOCK_SCREEN;
 
               try {
-                dio.download(values, localpath);
+                await dio.download(values, localpath);
 
                 print(localpath);
-                setState(() {
-                  downloading = false;
-                  _localpath = localpath;
-                });
+                // setState(() {
+                //   downloading = false;
+                //   _localpath = localpath;
+                // });
 
-                setState(() {
-                  downloading = false;
-                  BotToast.showSimpleNotification(
-                      title:
-                          "Setting as wallpaper...it might take  few seconds",
-                      duration: Duration(seconds: 3));
+                await WallpaperManager.setWallpaperFromFile(
+                    localpath, location);
+
+                var _timer = new Timer(const Duration(milliseconds: 1000), () {
+                  setState(() {
+                    downloading = false;
+                    BotToast.showSimpleNotification(
+                        title:
+                            "Setting as wallpaper...it might take  few seconds",
+                        duration: Duration(seconds: 3));
+                  });
                 });
 
                 //print(context);
-                WallpaperManager.setWallpaperFromFile(localpath, location);
+
               } on PlatformException catch (e) {
                 print(e);
               }
-
-              setState(() {
-                downloading = false;
-                progressString = "wall paper set";
-              });
 
               Navigator.pop(context);
             } else {}

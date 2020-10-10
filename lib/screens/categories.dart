@@ -55,9 +55,14 @@ class _CategoriesState extends State<Categories> {
   Widget build(BuildContext context) {
     var settingsProvider = Provider.of<SettingsProvider>(context);
     return Scaffold(
+      backgroundColor: !settingsProvider.darkTheme
+          ? Color(0xff292929)
+          : Colors.white, //DARK THEME
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
+        backgroundColor: !settingsProvider.darkTheme
+            ? Color(0xff292929)
+            : Colors.white, //DARK THEME
         title: AppName(settingsProvider.darkTheme),
         elevation: 0.0,
       ),
@@ -71,6 +76,9 @@ class _CategoriesState extends State<Categories> {
                 ),
               )
             : Container(
+                color: !settingsProvider.darkTheme
+                    ? Color(0xff292929)
+                    : Colors.white, //DARK THEME HERE
                 child: Column(
                   children: [
                     SizedBox(
