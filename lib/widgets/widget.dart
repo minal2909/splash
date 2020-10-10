@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:splash/Providers/themeProvider.dart';
 import 'package:splash/components/theme_toggle.dart';
 import 'package:splash/constant.dart';
 import 'package:splash/model/wallpaper_model.dart';
 import 'package:splash/size_config.dart';
 import 'package:splash/screens/image_view.dart';
+import 'package:splash/screens/t&c.dart';
+import 'package:splash/screens/privacyPolicy.dart';
 
 Widget AppName(bool darkTheme) {
   List<String> menu = [
@@ -38,30 +42,25 @@ Widget AppName(bool darkTheme) {
                 SizedBox(
                   width: 18.0,
                 ),
-                Text(
-                  "Incredible 4K wallpapers 2020",
-                  style: TextStyle(
-                      fontSize: getProportionateScreenWidth(14),
-                      color: !darkTheme
-                          ? Colors.white
-                          : Colors
-                              .black, //DARK THEME HERE--------------------------------------
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "mulish"),
+                Container(
+                  child: Text(
+                    "Incredible 4K wallpapers 2020",
+                    style: TextStyle(
+                        fontSize: getProportionateScreenWidth(14),
+                        color: !darkTheme
+                            ? Colors.white
+                            : Colors
+                                .black, //DARK THEME HERE--------------------------------------
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "mulish"),
+                  ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 40.0),
-                  child: IconButton(
-                    onPressed: () {
-                      Menu();
-                    },
-                    icon: Icon(
-                      Icons.menu,
-                      size: 30.0,
-                      color: Colors.white,
-                    ),
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Container(
+                    child: Menu(),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -114,20 +113,23 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   int _value = 1;
+  bool rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
-    onMenuPressed() {
-      DropdownButton(
-        underline: SizedBox(),
-        value: _value,
-        items: [
-          DropdownMenuItem(
+    var settingsProvider = Provider.of<SettingsProvider>(context);
+    return PopupMenuButton(
+      icon: Icon(
+        Icons.menu,
+        color: !settingsProvider.darkTheme ? Colors.white : Colors.black,
+      ),
+      itemBuilder: (BuildContext context) {
+        return [
+          PopupMenuItem(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: 70,
-                  height: 35,
                   child: CrazySwitch(),
                 ),
                 Text("Theme"),
@@ -135,31 +137,63 @@ class _MenuState extends State<Menu> {
             ),
             value: 1,
           ),
-          DropdownMenuItem(
-            child: Row(
-              children: [
-                Icon(Icons.arrow_forward_ios),
-                Text("Terms and Condition"),
-              ],
+          PopupMenuItem(
+            child: Divider(
+              height: 10,
+              thickness: 2,
+            ),
+            value: 1.5,
+          ),
+          PopupMenuItem(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return TermsAndCondition();
+                }));
+              },
+              child: Card(
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 10.0,
+                    ),
+                    Text("Terms and Condition"),
+                  ],
+                ),
+              ),
             ),
             value: 2,
           ),
-          DropdownMenuItem(
-            child: Row(
-              children: [
-                Icon(Icons.arrow_forward_ios),
-                Text("Terms and Condition"),
-              ],
+          PopupMenuItem(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return PrivacyPolicy();
+                }));
+              },
+              child: Card(
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 10.0,
+                    ),
+                    Text("Privacy Policy"),
+                  ],
+                ),
+              ),
             ),
             value: 3,
           )
-        ],
-        onChanged: (value) {
-          setState(() {
-            _value = value;
-          });
-        },
-      );
-    }
+        ];
+      },
+      onSelected: (value) {
+        print(value);
+        setState(() {
+          _value = 1;
+        });
+      },
+    );
   }
 }

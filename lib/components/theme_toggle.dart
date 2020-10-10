@@ -47,7 +47,7 @@ class _CrazySwitchState extends State<CrazySwitch>
       animation: _animationController,
       builder: (context, child) {
         return Container(
-          width: 80,
+          width: 70,
           height: 40,
           padding: EdgeInsets.fromLTRB(0, 6, 0, 6),
           decoration: BoxDecoration(
