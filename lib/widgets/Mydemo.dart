@@ -193,20 +193,21 @@ class _TabBarSplashState extends State<TabBarSplash>
                               : Colors.black, //DARK THEME HERE
                           tabs: [
                             Tab(
-                              icon: Icon(
-                                Icons.trending_up,
-                                color: !settingsProvider.darkTheme
-                                    ? Colors.white
-                                    : Colors.black, //DARK THEME HERE
-                              ),
+                              icon: Icon(Icons.trending_up,
+                                  color: Color(0xffF5164F)
+                                  //color: !settingsProvider.darkTheme
+                                  //     ? Colors.white
+                                  //     : Colors.black, //DARK THEME HERE
+                                  ),
                               text: "Trending",
                             ),
                             Tab(
                               icon: Icon(
                                 Icons.favorite,
-                                color: !settingsProvider.darkTheme
-                                    ? Colors.white
-                                    : Colors.black, //DARK THEME HERE
+                                color: Color(0xffF5164F),
+                                // color: !settingsProvider.darkTheme
+                                //     ? Colors.white
+                                //     : Colors.black, //DARK THEME HERE
                               ),
                               text: "Favourite",
                             ),

@@ -46,7 +46,7 @@ Widget AppName(bool darkTheme) {
                   child: Text(
                     "Incredible 4K wallpapers 2020",
                     style: TextStyle(
-                        fontSize: getProportionateScreenWidth(14),
+                        fontSize: getProportionateScreenWidth(16),
                         color: !darkTheme
                             ? Colors.white
                             : Colors
@@ -56,8 +56,9 @@ Widget AppName(bool darkTheme) {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 18.0),
+                  padding: const EdgeInsets.only(left: 10.0),
                   child: Container(
+                    padding: EdgeInsets.only(bottom: 10.0),
                     child: Menu(),
                   ),
                 ),
@@ -122,6 +123,7 @@ class _MenuState extends State<Menu> {
       icon: Icon(
         Icons.menu,
         color: !settingsProvider.darkTheme ? Colors.white : Colors.black,
+        size: 40.0,
       ),
       itemBuilder: (BuildContext context) {
         return [
