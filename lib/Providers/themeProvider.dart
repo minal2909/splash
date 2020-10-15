@@ -5,8 +5,6 @@ class SettingsProvider with ChangeNotifier {
   bool _darkTheme;
 
   SettingsProvider() {
-    _darkTheme = false;
-    clearPreferences();
     loadPreferences();
   }
 
@@ -28,7 +26,12 @@ class SettingsProvider with ChangeNotifier {
   loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _darkTheme = prefs.getBool('_darkTheme');
-    if (_darkTheme != null) setTheme(_darkTheme);
+    if (_darkTheme != null) {
+      setTheme(_darkTheme);
+    } else {
+      prefs.setBool('_darkTheme', false);
+      setTheme(false);
+    }
   }
 
   clearPreferences() async {
