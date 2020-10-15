@@ -27,9 +27,9 @@ Widget AppName(bool darkTheme) {
           color:
               !darkTheme ? Color(0xff292929) : Colors.white, //DARK THEME HERE
           child: Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(8.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
@@ -44,9 +44,9 @@ Widget AppName(bool darkTheme) {
                 ),
                 Container(
                   child: Text(
-                    "Incredible 4K wallpapers 2020",
+                    "Incredible wallpapers",
                     style: TextStyle(
-                        fontSize: getProportionateScreenWidth(16),
+                        fontSize: getProportionateScreenWidth(20),
                         color: !darkTheme
                             ? Colors.white
                             : Colors

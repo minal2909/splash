@@ -54,40 +54,44 @@ class _CategoriesState extends State<Categories> {
   @override
   Widget build(BuildContext context) {
     var settingsProvider = Provider.of<SettingsProvider>(context);
-    return Scaffold(
-      backgroundColor: !settingsProvider.darkTheme
-          ? Color(0xff292929)
-          : Colors.white, //DARK THEME
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
+    return Container(
+      child: Scaffold(
         backgroundColor: !settingsProvider.darkTheme
             ? Color(0xff292929)
             : Colors.white, //DARK THEME
-        title: AppName(settingsProvider.darkTheme),
-        elevation: 0.0,
-      ),
-      body: SingleChildScrollView(
-        child: loading
-            ? Padding(
-                padding: const EdgeInsets.symmetric(vertical: 300.0),
-                child: SpinKitRing(
-                  color: Color(0xff37474f),
-                  size: 60.0,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: !settingsProvider.darkTheme
+              ? Color(0xff292929)
+              : Colors.white, //DARK THEME
+          title: Container(
+              width: MediaQuery.of(context).size.width,
+              child: AppName(settingsProvider.darkTheme)),
+          elevation: 0.0,
+        ),
+        body: SingleChildScrollView(
+          child: loading
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 300.0),
+                  child: SpinKitRing(
+                    color: Color(0xff37474f),
+                    size: 60.0,
+                  ),
+                )
+              : Container(
+                  color: !settingsProvider.darkTheme
+                      ? Color(0xff292929)
+                      : Colors.white, //DARK THEME HERE
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 16.0,
+                      ),
+                      wallpaperList(wallpaper: wallpaper, context: context),
+                    ],
+                  ),
                 ),
-              )
-            : Container(
-                color: !settingsProvider.darkTheme
-                    ? Color(0xff292929)
-                    : Colors.white, //DARK THEME HERE
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 16.0,
-                    ),
-                    wallpaperList(wallpaper: wallpaper, context: context),
-                  ],
-                ),
-              ),
+        ),
       ),
     );
   }

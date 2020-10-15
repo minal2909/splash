@@ -48,5 +48,29 @@ List<CategoriesModel> getCategories() {
   categories.add(categoriesModel);
   categoriesModel = new CategoriesModel();
 
+  categoriesModel.imgURL =
+      "https://images.pexels.com/photos/1910236/pexels-photo-1910236.jpeg?auto=compress&cs=tinysrg&dpr=2&w=500";
+  categoriesModel.catagoriesName = "Art";
+  categories.add(categoriesModel);
+  categoriesModel = new CategoriesModel();
+
+  categoriesModel.imgURL =
+      "https://images.pexels.com/photos/46710/pexels-photo-46710.jpeg?auto=compress&cs=tinysrg&dpr=2&w=500";
+  categoriesModel.catagoriesName = "Summer";
+  categories.add(categoriesModel);
+  categoriesModel = new CategoriesModel();
+
+  categoriesModel.imgURL =
+      "https://images.pexels.com/photos/1114900/pexels-photo-1114900.jpeg?auto=compress&cs=tinysrg&dpr=2&w=500";
+  categoriesModel.catagoriesName = "Space";
+  categories.add(categoriesModel);
+  categoriesModel = new CategoriesModel();
+
+  categoriesModel.imgURL =
+      "https://images.pexels.com/photos/2833909/pexels-photo-2833909.jpeg?auto=compress&cs=tinysrg&dpr=2&w=500";
+  categoriesModel.catagoriesName = "Sunset";
+  categories.add(categoriesModel);
+  categoriesModel = new CategoriesModel();
+
   return categories;
 }
