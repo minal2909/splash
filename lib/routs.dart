@@ -10,6 +10,5 @@ final Map<String, WidgetBuilder> routes = {
   Home.routeName: (context) => Home(),
   Search.routeName: (context) => Search(),
   ImageView.routeName: (context) => ImageView(),
-  //TabBarSplash.routeName: (context) => TabBarSplash(),
   MyDemo.routeName: (context) => MyDemo(),
 };

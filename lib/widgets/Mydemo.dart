@@ -9,6 +9,7 @@ import 'package:splash/model/categories_model.dart';
 import 'package:splash/model/wallpaper_model.dart';
 import 'package:splash/screens/favourites.dart';
 import 'package:splash/screens/home.dart';
+import 'package:splash/screens/popular.dart';
 import 'package:splash/widgets/widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:splash/screens/search.dart';
@@ -42,26 +43,6 @@ class _TabBarSplashState extends State<TabBarSplash>
   ScrollController _scrollController = new ScrollController();
   TabController _controller;
   List<WallpaperModel> wallpaper = new List();
-  // AutoCompleteTextField searchTextField;
-  // GlobalKey<AutoCompleteTextFieldState<WallpaperModel>> key = new GlobalKey();
-  //
-  // Widget row(WallpaperModel wallpaperModel) {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //     children: [
-  //       Text(
-  //         wallpaperModel.photographer,
-  //         style: TextStyle(fontSize: 16.0),
-  //       ),
-  //       SizedBox(
-  //         width: 10.0,
-  //       ),
-  //       Text(
-  //         wallpaperModel.photographerURL,
-  //       )
-  //     ],
-  //   );
-  // }
 
   @override
   void initState() {
@@ -110,33 +91,6 @@ class _TabBarSplashState extends State<TabBarSplash>
                 child: Row(
                   children: [
                     Expanded(
-                      // child: searchTextField =
-                      //     AutoCompleteTextField<WallpaperModel>(
-                      //   key: key,
-                      //   clearOnSubmit: false,
-                      //   suggestions: wallpaper,
-                      //   decoration: InputDecoration(
-                      //     border: InputBorder.none,
-                      //     hintText: "Search Wallpaper",
-                      //   ),
-                      //   itemFilter: (item, query) {
-                      //     return item.photographer
-                      //         .toLowerCase()
-                      //         .startsWith(query.toLowerCase());
-                      //   },
-                      //   itemSorter: (a, b) {
-                      //     return a.photographer.compareTo(b.photographer);
-                      //   },
-                      //   itemSubmitted: (item) {
-                      //     setState(() {
-                      //       searchTextField.textField.controller.text =
-                      //           item.photographer;
-                      //     });
-                      //   },
-                      //   itemBuilder: (context, item) {
-                      //     return row(item);
-                      //   },
-                      // ),
                       child: TextField(
                         controller: searchEditingController,
                         decoration: InputDecoration(
@@ -199,17 +153,17 @@ class _TabBarSplashState extends State<TabBarSplash>
                                   //     ? Colors.white
                                   //     : Colors.black, //DARK THEME HERE
                                   ),
-                              text: "Trending",
+                              text: "Latest",
                             ),
                             Tab(
                               icon: Icon(
-                                Icons.favorite,
+                                Icons.star,
                                 color: Color(0xffF5164F),
                                 // color: !settingsProvider.darkTheme
                                 //     ? Colors.white
                                 //     : Colors.black, //DARK THEME HERE
                               ),
-                              text: "Favourite",
+                              text: "Popular",
                             ),
                           ],
                         ),
@@ -227,7 +181,7 @@ class _TabBarSplashState extends State<TabBarSplash>
                                 child: Home(),
                               ),
                               Card(
-                                child: Favourites(),
+                                child: Popular(),
                               )
                             ],
                           ),

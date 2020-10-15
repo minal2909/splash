@@ -156,33 +156,6 @@ class _SearchState extends State<Search> {
                         child: Row(
                           children: [
                             Expanded(
-                              // child: searchTextField =
-                              //     AutoCompleteTextField<WallpaperModel>(
-                              //   key: key,
-                              //   clearOnSubmit: false,
-                              //   suggestions: wallpaper,
-                              //   decoration: InputDecoration(
-                              //     border: InputBorder.none,
-                              //     hintText: "Search Wallpaper",
-                              //   ),
-                              //   itemFilter: (item, query) {
-                              //     return item.photographer
-                              //         .toLowerCase()
-                              //         .startsWith(query.toLowerCase());
-                              //   },
-                              //   itemSorter: (a, b) {
-                              //     return a.photographer.compareTo(b.photographer);
-                              //   },
-                              //   itemSubmitted: (item) {
-                              //     setState(() {
-                              //       searchTextField.textField.controller.text =
-                              //           item.photographer;
-                              //     });
-                              //   },
-                              //   itemBuilder: (context, item) {
-                              //     return row(item);
-                              //   },
-                              // ),
                               child: TextField(
                                 controller: searchEditingController,
                                 decoration: InputDecoration(

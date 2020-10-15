@@ -46,7 +46,11 @@ dependencies:
   wallpaper_manager: ^1.0.10
   flutter_cache_manager: ^1.4.2
   shared_preferences: ^0.5.12
+  share: ^0.6.5+2
   bot_toast: ^3.0.4
+  esys_flutter_share: ^1.0.2
+  image_picker: ^0.6.7+12
+
 
 dev_dependencies:
   flutter_test:
@@ -99,6 +103,7 @@ flutter:
         - asset: fonts/Mulish-MediumItalic.ttf
         - asset: fonts/Mulish-SemiBold.ttf
         - asset: fonts/Mulish-SemiBoldItalic.ttf
+
 
 
   #         style: italic

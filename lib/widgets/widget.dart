@@ -147,13 +147,13 @@ class _MenuState extends State<Menu> {
             value: 1.5,
           ),
           PopupMenuItem(
-            child: GestureDetector(
+            child: InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return TermsAndCondition();
                 }));
               },
-              child: Card(
+              child: Container(
                 child: Row(
                   children: [
                     Icon(
@@ -168,13 +168,13 @@ class _MenuState extends State<Menu> {
             value: 2,
           ),
           PopupMenuItem(
-            child: GestureDetector(
+            child: InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return PrivacyPolicy();
                 }));
               },
-              child: Card(
+              child: Container(
                 child: Row(
                   children: [
                     Icon(

@@ -20,6 +20,9 @@ import 'package:splash/data/data.dart';
 import 'package:wallpaper_manager/wallpaper_manager.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+import 'package:http/http.dart' as http;
+import 'package:esys_flutter_share/esys_flutter_share.dart';
+
 List<String> imgList = [];
 enum SetWallpaperAs { Home, Lock, Both }
 
@@ -34,7 +37,7 @@ class ImageView extends StatefulWidget {
 
   final String imgURL;
   ImageView({
-    @required this.imgURL,
+    this.imgURL,
   });
 
   @override
@@ -159,30 +162,8 @@ class _ImageViewState extends State<ImageView> {
               int location = WallpaperManager.HOME_SCREEN;
 
               try {
-                // var response = await Dio().get(widget.imgURL,
-                //     options: Options(responseType: ResponseType.bytes),
-                //     onReceiveProgress: (rec, total) {
-                //   print("Rec: $rec, Total:$total");
-                //   setState(() {
-                //     downloading = true;
-                //     progressString =
-                //         ((rec / total) * 100).toStringAsFixed(0) + "%";
-                //   });
-                // });
-
                 await dio.download(values, localpath);
-                //onReceiveProgress: (rec, total) {
-                // print("Rec: $rec, Total:$total");
-                // setState(() {
-                //   downloading = true;
-                //   progressString =
-                //       ((rec / total) * 100).toStringAsFixed(0) + "%";
-                // });
-                //})
-                // setState(() {
-                //   downloading = false;
-                //   _localpath = localpath;
-                // });
+
                 await WallpaperManager.setWallpaperFromFile(
                     localpath, location);
 
@@ -192,10 +173,6 @@ class _ImageViewState extends State<ImageView> {
                     title: "Setting as wallpaper...it might take  few seconds",
                     duration: Duration(seconds: 3),
                   );
-
-                  // BotToast.showText(
-                  //     text: "Setting as wallpaer...it will take a few seconds");
-                  // progressString = "wall paper set";
                 });
                 //print(context);
 
@@ -263,6 +240,8 @@ class _ImageViewState extends State<ImageView> {
       ],
     );
   }
+
+  Future<void> share_image() async {}
 
   _launchURL(String url) async {
     if (await canLaunch(url)) {
@@ -441,21 +420,29 @@ class _ImageViewState extends State<ImageView> {
                                   ],
                                 ),
                               ),
-                              // padding:
-                              //     EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                               child: IconButton(
                                 onPressed: () {
-                                  _pressed(widget.imgURL);
+                                  share_image();
                                 },
                                 alignment: Alignment.center,
                                 icon: Icon(
-                                  !liked
-                                      ? Icons.favorite_border
-                                      : Icons.favorite,
-                                  color:
-                                      !liked ? Colors.white : Colors.redAccent,
+                                  Icons.share,
+                                  color: Colors.white,
                                 ),
                               ),
+                              // child: IconButton(
+                              //   onPressed: () {
+                              //     _pressed(widget.imgURL);
+                              //   },
+                              //   alignment: Alignment.center,
+                              //   icon: Icon(
+                              //     !liked
+                              //         ? Icons.favorite_border
+                              //         : Icons.favorite,
+                              //     color:
+                              //         !liked ? Colors.white : Colors.redAccent,
+                              //   ),
+                              // ),
                             ),
                           ),
                         ],
