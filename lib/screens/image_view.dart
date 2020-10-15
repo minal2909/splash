@@ -6,6 +6,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker_saver/image_picker_saver.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -20,7 +21,6 @@ import 'package:splash/data/data.dart';
 import 'package:wallpaper_manager/wallpaper_manager.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import 'package:http/http.dart' as http;
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 
 List<String> imgList = [];
@@ -241,7 +241,17 @@ class _ImageViewState extends State<ImageView> {
     );
   }
 
-  Future<void> share_image() async {}
+  shareImage(context) async {
+    String url = widget.imgURL;
+    String extension = url.split("?")[0].split("/").last.split(".")[1];
+
+    //share
+    var request = await HttpClient().getUrl(Uri.parse(url));
+    var response = await request.close();
+    Uint8List bytes = await consolidateHttpClientResponseBytes(response);
+    await Share.file(
+        'ESYS AMLOG', 'sharedImage.$extension', bytes, 'image/$extension');
+  }
 
   _launchURL(String url) async {
     if (await canLaunch(url)) {
@@ -422,7 +432,8 @@ class _ImageViewState extends State<ImageView> {
                               ),
                               child: IconButton(
                                 onPressed: () {
-                                  share_image();
+                                  print("Sharing");
+                                  shareImage(context);
                                 },
                                 alignment: Alignment.center,
                                 icon: Icon(
