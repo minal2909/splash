@@ -32,13 +32,9 @@ class _HomeState extends State<Home> {
     http.Response response = await http.get(
         "https://api.pexels.com/v1/curated?per_page=$noOfImageToLoad&page=1",
         headers: {"Authorization": apiKey});
-    if (response.statusCode == 200) {
-      setState(() {
-        loading = false;
-      });
-    } else {
-      print("user getting error");
-    }
+    setState(() {
+      loading = false;
+    });
 
     Map<String, dynamic> jsonData = jsonDecode(response.body);
     jsonData["photos"].forEach((element) {

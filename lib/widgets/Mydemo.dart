@@ -175,13 +175,14 @@ class _TabBarSplashState extends State<TabBarSplash>
                               : Colors.white, //DARK THEME HERE
                           height: 10,
                           child: TabBarView(
+                            //TAB BAR FOUND---------------------------
                             controller: _controller,
                             children: [
                               Card(
                                 child: Home(),
                               ),
                               Card(
-                                child: Popular(),
+                                child: Popular("popular"),
                               )
                             ],
                           ),

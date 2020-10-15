@@ -12,7 +12,7 @@ import 'package:splash/widgets/widget.dart';
 
 class Popular extends StatefulWidget {
   final String categoryName;
-  Popular({this.categoryName});
+  Popular(this.categoryName);
 
   List<CategoriesModel> getCategories() {
     List<CategoriesModel> categories = new List();
@@ -38,24 +38,20 @@ class _PopularState extends State<Popular> {
         "https://api.pexels.com/v1/search?query=$query&per_page=80",
         headers: {"Authorization": apiKey});
 
-    if (response.statusCode == 200) {
-      setState(() {
-        loading = false;
-      });
-    } else {
-      print("user getting error");
-    }
+    setState(() {
+      loading = false;
+    });
 
     Map<String, dynamic> jsonData = jsonDecode(response.body);
     jsonData["photos"].forEach((element) {
-      //print(element);
+      // print(element);
       WallpaperModel wallpaperModel = new WallpaperModel();
       wallpaperModel = WallpaperModel.fromMap(element);
       wallpaper.add(wallpaperModel);
       //print(wallpaperModel.toString());
     });
 
-    setState(() {});
+    // setState(() {});
   }
 
   void initState() {
@@ -66,6 +62,7 @@ class _PopularState extends State<Popular> {
 
   @override
   Widget build(BuildContext context) {
+    // print(wallpaper.length);
     var settingsProvider = Provider.of<SettingsProvider>(context);
     return Container(
       child: Scaffold(
