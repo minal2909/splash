@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,15 +41,20 @@ class _SearchState extends State<Search> {
     }
 
     Map<String, dynamic> jsonData = jsonDecode(response.body);
-    jsonData["photos"].forEach((element) {
-      //print(element);
-      WallpaperModel wallpaperModel = new WallpaperModel();
-      wallpaperModel = WallpaperModel.fromMap(element);
-      wallpaper.add(wallpaperModel);
-      //print(wallpaperModel.toString());
-    });
 
-    setState(() {});
+    if (jsonData["total_results"] == 0) {
+      BotToast.showText(text: "No image found");
+    } else {
+      jsonData["photos"].forEach((element) {
+        //print(element);
+        WallpaperModel wallpaperModel = new WallpaperModel();
+        wallpaperModel = WallpaperModel.fromMap(element);
+        wallpaper.add(wallpaperModel);
+        //print(wallpaperModel.toString());
+      });
+    }
+
+    // setState(() {});
   }
 
   @override

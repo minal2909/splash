@@ -29,7 +29,10 @@ class Popular extends StatefulWidget {
   _PopularState createState() => _PopularState();
 }
 
-class _PopularState extends State<Popular> {
+class _PopularState extends State<Popular>
+    with AutomaticKeepAliveClientMixin<Popular> {
+  @override
+  bool get wantKeepAlive => true;
   List<WallpaperModel> wallpaper = new List();
   bool loading = true;
 
@@ -86,7 +89,7 @@ class _PopularState extends State<Popular> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 16.0,
+                        height: 5.0,
                       ),
                       wallpaperList(wallpaper: wallpaper, context: context),
                     ],
