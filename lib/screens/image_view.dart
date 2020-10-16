@@ -441,19 +441,6 @@ class _ImageViewState extends State<ImageView> {
                                   color: Colors.white,
                                 ),
                               ),
-                              // child: IconButton(
-                              //   onPressed: () {
-                              //     _pressed(widget.imgURL);
-                              //   },
-                              //   alignment: Alignment.center,
-                              //   icon: Icon(
-                              //     !liked
-                              //         ? Icons.favorite_border
-                              //         : Icons.favorite,
-                              //     color:
-                              //         !liked ? Colors.white : Colors.redAccent,
-                              //   ),
-                              // ),
                             ),
                           ),
                         ],

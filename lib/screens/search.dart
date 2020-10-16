@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:splash/data/data.dart';
 import 'package:splash/model/wallpaper_model.dart';
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-
 import '../size_config.dart';
 
 class Search extends StatefulWidget {
@@ -27,28 +26,7 @@ class _SearchState extends State<Search> {
   GlobalKey<AutoCompleteTextFieldState<WallpaperModel>> key = new GlobalKey();
   bool loading = true;
 
-  Widget row(WallpaperModel wallpaperModel) {
-    return Container(
-      color: Color(0xff292929), //DARK THEME HERE
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            wallpaperModel.photographer,
-            style: TextStyle(fontSize: 16.0),
-          ),
-          SizedBox(
-            width: 10.0,
-          ),
-          Text(
-            wallpaperModel.photographerURL,
-          )
-        ],
-      ),
-    );
-  }
-
-  void getSearchWallpapers(String query) async {
+  getSearchWallpapers(String query) async {
     http.Response response = await http.get(
         "https://api.pexels.com/v1/search?query=$query&per_page=80",
         headers: {"Authorization": apiKey});
@@ -135,59 +113,59 @@ class _SearchState extends State<Search> {
           elevation: 0.0,
         ),
         body: SingleChildScrollView(
-          child: loading
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 300.0),
-                  child: SpinKitRing(
-                    color: Color(0xff37474f),
-                    size: 60.0,
-                  ),
-                )
-              : Container(
-                  child: Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30.0),
-                          color: Color(0xfff5f8fd),
-                        ),
-                        padding: EdgeInsets.symmetric(horizontal: 24.0),
-                        margin: EdgeInsets.symmetric(horizontal: 24.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                controller: searchEditingController,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: "Search Wallpaper",
+            child: loading
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 300.0),
+                    child: SpinKitRing(
+                      color: Color(0xff37474f),
+                      size: 60.0,
+                    ),
+                  )
+                : Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                            color: Color(0xfff5f8fd),
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 24.0),
+                          margin: EdgeInsets.symmetric(horizontal: 24.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: searchEditingController,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "Search Wallpaper",
+                                  ),
+                                  onSubmitted: _handleSubmitted,
                                 ),
-                                onSubmitted: _handleSubmitted,
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Search(
-                                              searchQuery:
-                                                  searchEditingController.text,
-                                            )));
-                              },
-                              child: Container(child: Icon(Icons.search)),
-                            ),
-                          ],
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Search(
+                                                searchQuery:
+                                                    searchEditingController
+                                                        .text,
+                                              )));
+                                },
+                                child: Container(child: Icon(Icons.search)),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 16.0,
-                      ),
-                      wallpaperList(wallpaper: wallpaper, context: context),
-                    ],
-                  ),
-                ),
-        ),
+                        SizedBox(
+                          height: 16.0,
+                        ),
+                        wallpaperList(wallpaper: wallpaper, context: context)
+                      ],
+                    ),
+                  )),
       ),
     );
   }

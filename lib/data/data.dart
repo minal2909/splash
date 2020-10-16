@@ -1,6 +1,6 @@
 import 'package:splash/model/categories_model.dart';
 
-String apiKey = "563492ad6f91700001000001109676414a6f409999eb6c308f8c4a10";
+String apiKey = "563492ad6f917000010000016742b0e49619475281cc25d32a0ccd25";
 
 List<CategoriesModel> getCategories() {
   List<CategoriesModel> categories = new List();
