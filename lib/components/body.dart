@@ -21,11 +21,11 @@ class _BodyState extends State<Body> {
     },
     {
       "text":
-          "You can directly Set the wallpaper from the app in home,lock and Home & Lock Screen",
+          "You can directly Set the wallpaper from the app in Home Screen and lock Screen",
       "image": "images/splash_setWallpaper.png"
     },
     {"text": "Easy share and download", "image": "images/splash_share.png"},
-    {"text": "set to favourites", "image": "images/splash_fav.png"},
+    {"text": "All your favourite categories available with HD wallpapers", "image": "images/splash_fav.png"},
   ];
 
   @override

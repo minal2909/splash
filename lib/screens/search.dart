@@ -151,7 +151,8 @@ class _SearchState extends State<Search> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
+                                  
+                                 Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => Search(

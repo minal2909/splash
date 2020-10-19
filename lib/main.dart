@@ -8,13 +8,55 @@ import 'constant.dart';
 import 'routs.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_admob/firebase_admob.dart';
+
+const String testDevice='Mobile_id';
 
 void main() => runApp(ChangeNotifierProvider(
       create: (BuildContext context) => SettingsProvider(),
       child: MyApp(),
     ));
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+    testDevices: testDevice != null ? <String> [testDevice] : null,
+    nonPersonalizedAds: true,
+    keywords: <String>['Wallpaper'],
+);
+
+  BannerAd _bannerAd;
+
+  BannerAd createBannerAd(){
+    return BannerAd(
+      adUnitId: BannerAd.testAdUnitId,
+      size: AdSize.banner,
+      targetingInfo: targetingInfo,
+      listener : (MobileAdEvent event){
+        print("BannerAdd $event");
+      }
+    );
+  }
+
+  @override
+  void initState() {
+    FirebaseAdMob.instance.initialize(appId: BannerAd.testAdUnitId);
+    _bannerAd= createBannerAd()..load()..show();
+
+  super.initState();
+  }
+
+  @override
+  void dispose() {
+    _bannerAd.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

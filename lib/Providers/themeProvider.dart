@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsProvider with ChangeNotifier {
-  bool _darkTheme = false;
+  bool _darkTheme =true;
 
   SettingsProvider() {
     loadPreferences();
@@ -29,8 +29,8 @@ class SettingsProvider with ChangeNotifier {
     if (_darkTheme != null) {
       setTheme(_darkTheme);
     } else {
-      prefs.setBool('_darkTheme', false);
-      setTheme(false);
+      prefs.setBool('_darkTheme', true);
+      setTheme(true);
     }
   }
 
