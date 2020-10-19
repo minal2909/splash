@@ -25,7 +25,10 @@ class _BodyState extends State<Body> {
       "image": "images/splash_setWallpaper.png"
     },
     {"text": "Easy share and download", "image": "images/splash_share.png"},
-    {"text": "All your favourite categories available with HD wallpapers", "image": "images/splash_fav.png"},
+    {
+      "text": "All your favourite categories available with HD wallpapers",
+      "image": "images/splash_fav.png"
+    },
   ];
 
   @override
@@ -66,7 +69,7 @@ class _BodyState extends State<Body> {
                         ),
                       ),
                       Spacer(
-                        flex: 3,
+                        flex: 2,
                       ),
                       defaultButton(
                         text: "Continue",
