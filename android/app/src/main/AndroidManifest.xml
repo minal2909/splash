@@ -16,6 +16,9 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="Incredible 4K Wallpapers 2020"
         android:icon="@mipmap/ic_launcher">
+        <meta-data 
+        android:name="com.google.android.gms.ads.Ad_MANAGER_APP"
+        android:value="TRUE"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

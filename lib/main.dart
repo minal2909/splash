@@ -10,7 +10,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 
-const String testDevice='Mobile_id';
+ const String testDevice='861646040148999';
 
 void main() => runApp(ChangeNotifierProvider(
       create: (BuildContext context) => SettingsProvider(),
@@ -19,10 +19,7 @@ void main() => runApp(ChangeNotifierProvider(
 
 class MyApp extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+  
 
   static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
     testDevices: testDevice != null ? <String> [testDevice] : null,
@@ -30,13 +27,18 @@ class _MyAppState extends State<MyApp> {
     keywords: <String>['Wallpaper'],
 );
 
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   BannerAd _bannerAd;
 
   BannerAd createBannerAd(){
     return BannerAd(
       adUnitId: BannerAd.testAdUnitId,
       size: AdSize.banner,
-      targetingInfo: targetingInfo,
+      targetingInfo: MyApp.targetingInfo,
       listener : (MobileAdEvent event){
         print("BannerAdd $event");
       }
@@ -55,7 +57,7 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     _bannerAd.dispose();
     super.dispose();
-  }
+ }
 
   @override
   Widget build(BuildContext context) {
